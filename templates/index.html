@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamster Kombat Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        #log {
+            white-space: pre-wrap;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 20px;
+            height: 300px;
+            overflow-y: scroll;
+            background-color: #000;
+            color: #fff;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hamster Kombat Bot</h1>
+    <form action="/update_initdata" method="post">
+        <label for="content">Update Init Data:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Update">
+    </form>
+    <form action="/start_bot" method="post">
+        <label for="auto_upgrade_energy">Upgrade Energy (default n) ? (y/n):</label><br>
+        <input type="text" id="auto_upgrade_energy" name="auto_upgrade_energy" value="n"><br><br>
+
+        <label for="auto_upgrade_multitap">Upgrade Multitap (default n) ? (y/n):</label><br>
+        <input type="text" id="auto_upgrade_multitap" name="auto_upgrade_multitap" value="n"><br><br>
+
+        <label for="auto_upgrade_passive">Auto Upgrade Mining (Passive Earn)? (default n) (y/n):</label><br>
+        <input type="text" id="auto_upgrade_passive" name="auto_upgrade_passive" value="n"><br><br>
+
+        <label for="lanjut_upgrade">Upgrade yang lain jika coin tidak cukup? (default n) (y/n):</label><br>
+        <input type="text" id="lanjut_upgrade" name="lanjut_upgrade" value="n"><br><br>
+
+        <label for="cek_task_list">Enable Cek Task? (default n) (y/n):</label><br>
+        <input type="text" id="cek_task_list" name="cek_task_list" value="n"><br><br>
+
+        <label for="ask_cipher">Auto Claim Cipher Daily / Sandi Harian? (default n) (y/n):</label><br>
+        <input type="text" id="ask_cipher" name="ask_cipher" value="n"><br><br>
+
+        <label for="cipher_text">Masukkan cipher nya / sandi harian:</label><br>
+        <input type="text" id="cipher_text" name="cipher_text"><br><br>
+
+        <input type="submit" value="Start Bot">
+    </form>
+    <div id="log"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script type="text/javascript">
+        var socket = io();
+        var logDiv = document.getElementById('log');
+        socket.on('log', function(msg) {
+            var message = document.createElement('div');
+            message.textContent = msg.data.replace(/\[.*?m/g, ''); // Remove ANSI color codes
+            logDiv.appendChild(message);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        });
+    </script>
+</body>
+</html>
